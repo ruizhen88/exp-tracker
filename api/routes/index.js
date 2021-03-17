@@ -1,4 +1,37 @@
 module.exports = function (app, Product) {
+  const multer = require("multer");
+  const storage = multer.diskStorage({
+    destination: "./public/uploads/",
+    filename: function (req, file, cb) {
+      const fileName = file.originalname.toLowerCase().split(" ").join("-");
+      cb(null, Date.now() + "-" + fileName);
+    },
+  });
+
+  const upload = multer({
+    storage: storage,
+    limits: { fileSize: 1000000 },
+  }).single("myImage");
+
+  app.post("/upload", (req, res) => {
+    upload(req, res, (err) => {
+      if (err) {
+        console.log(error);
+        res.status(500).end();
+      }
+      console.log("Request ---", req.body);
+      console.log("Request file ---", req.file); //Here you get file.
+      res.send(req.file);
+    });
+  });
+
+  // app.post("/profile", upload.single("avatar"), function (req, res, next) {
+  //   // req.file is the `avatar` file
+  //   // req.body will hold the text fields, if there were any
+  //   res.send(req.file);
+  //   console.log(req.file);
+  // });
+
   // GET ALL PRODUCTS
   app.get("/products", (req, res) => {
     Product.find((err, products) => {
