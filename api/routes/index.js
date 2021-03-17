@@ -7,7 +7,6 @@ module.exports = function (app, Product) {
       cb(null, Date.now() + "-" + fileName);
     },
   });
-
   const upload = multer({
     storage: storage,
     limits: { fileSize: 1000000 },
@@ -19,18 +18,10 @@ module.exports = function (app, Product) {
         console.log(error);
         res.status(500).end();
       }
-      console.log("Request ---", req.body);
-      console.log("Request file ---", req.file); //Here you get file.
+      console.log(req.file);
       res.send(req.file);
     });
   });
-
-  // app.post("/profile", upload.single("avatar"), function (req, res, next) {
-  //   // req.file is the `avatar` file
-  //   // req.body will hold the text fields, if there were any
-  //   res.send(req.file);
-  //   console.log(req.file);
-  // });
 
   // GET ALL PRODUCTS
   app.get("/products", (req, res) => {
