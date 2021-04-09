@@ -25,6 +25,7 @@ mongoose
 const cors = require("cors");
 app.use(cors()); // 브라우저 CORS 허용
 app.use(express.static("public"));
+app.use(express.static("build"));
 
 // catch 404 and forward to error handler
 // app.use(function (req, res, next) {
